@@ -35,12 +35,18 @@ public class ClickScript : MonoBehaviour {
     private float b = 9.819f;
     private float c = 7.987f;
 
+    void deScale(ref Vector3 vect)
+    {
+        vect.Set(vect.x / a, vect.y / b, vect.z / c);
+    }
+
     void OnMouseDown()
     {
         Vector3 vect = new Vector3(this.transform.localPosition.x,
             this.transform.localPosition.y,this.transform.localPosition.z);
         YZSwap(ref vect);
         transToOrt(ref vect);
+        //deScale(ref vect);
         text.text =El +" x: " +  vect.x.ToString("F3") + " y: "
             + vect.y.ToString("F3") + " z: " +  vect.z.ToString("F3")
             + " x/a: " + (vect.x/a) .ToString("F3") + " y/b: "

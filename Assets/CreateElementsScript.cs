@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class CreateElementsScript : MonoBehaviour {
     public GameObject LaPrefab;
@@ -76,6 +77,8 @@ public class CreateElementsScript : MonoBehaviour {
         List<Vector3> list = new List<Vector3>();
         foreach (var rep in replications)
             list.Add(rep(locate));
+        
+        list = addAxesElement(list);
         foreach (var i in list)
         {
             Vector3 el = i;
@@ -83,15 +86,63 @@ public class CreateElementsScript : MonoBehaviour {
             Scale(ref el);
             transToUSC(ref el);
             YZSwap(ref el);
+            if (HaveElement(el))
+                continue;
             GameObject NewObj = (GameObject)Instantiate(obj, el, Quaternion.identity);
             NewObj.transform.parent = this.transform;
         }
 
     }
 
+    private List<Vector3> addAxesElement(List<Vector3> list)
+    {
+        List<Vector3> nList = new List<Vector3>();
+        foreach (var i in list)
+        {
+            nList.Add(i);
+            if (i.x == 0)
+                nList.Add(new Vector3(1, i.y, i.z));
+            if (i.y == 0)
+                nList.Add(new Vector3(i.x, 1, i.z));
+            if (i.z == 0)
+                nList.Add(new Vector3(i.x, i.y, 1));
+            if (i.x == 0 && i.y == 0)
+                nList.Add(new Vector3(1, 1, i.z));
+            if (i.x == 0 && i.z == 0)
+                nList.Add(new Vector3(1, i.y, 1));
+            if (i.y == 0 && i.z == 0)
+                nList.Add(new Vector3(i.x, 1, 1));
+            if (i.x == 1)
+                nList.Add(new Vector3(0, i.y, i.z));
+            if (i.y == 1)
+                nList.Add(new Vector3(i.x, 0, i.z));
+            if (i.z == 1)
+                nList.Add(new Vector3(i.x, i.y, 0));
+            if (i.x == 1 && i.y == 1)
+                nList.Add(new Vector3(0, 0, i.z));
+            if (i.x == 1 && i.z == 1)
+                nList.Add(new Vector3(0, i.y, 0));
+            if (i.y == 1 && i.z == 1)
+                nList.Add(new Vector3(i.x, 0, 0));
+        }
+        return nList;
+    }
 
-	// Use this for initialization
-	void Start () {
+    private bool HaveElement(Vector3 el)
+    {
+        int count = this.transform.childCount;
+        for (int j = 0; j < count; j++)
+        {
+            Transform tr = this.transform.GetChild(j);
+            if (tr.localPosition == el)
+                return true;
+        }
+        return false;
+    }
+
+
+    // Use this for initialization
+    void Start () {
         repCreating();
         ReplicateItem(LaPrefab, new Vector3(1f / 3, 2f / 3, 2f / 3));
         ReplicateItem(ScPrefab, new Vector3(0.1179f, 1f / 3, 1f / 3));

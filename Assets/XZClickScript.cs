@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class XZClickScript : MonoBehaviour {
     public Camera mainCam;
@@ -35,7 +36,7 @@ public class XZClickScript : MonoBehaviour {
         XZBut.onClick.AddListener(onClick) ;
         XYBut.onClick.AddListener(onClickXY);
         ThreeDBut.onClick.AddListener(onClick3D);
-        reset.onClick.AddListener(resetScene);
+        //reset.onClick.AddListener(resetScene);
 	}
 	
 	// Update is called once per frame
@@ -45,7 +46,7 @@ public class XZClickScript : MonoBehaviour {
 
     void resetScene()
     {
-        Application.LoadLevel(0);
+        SceneManager.LoadScene(0);
     }
     void onClick()
     {
@@ -58,24 +59,18 @@ public class XZClickScript : MonoBehaviour {
     void onClickXY()
     {
         deactiveCameraRot();
-        setZActive(false);
+        //setZActive(false);
         mainCam.transform.rotation = Quaternion.Euler(0, 120, 0);
         mainCam.transform.position = new Vector3(-25f, 5f, 20f);
         mainCam.orthographicSize = 6;
     }
 
-    private void setZActive(bool value)
-    {
-        Z1.SetActive(value);
-        Z2.SetActive(value);
-    }
-
     void onClick3D()
     {
-        setZActive(true);
+        //setZActive(true);
         activeCameraRot();
-        mainCam.transform.rotation = Quaternion.Euler(30, 210, 0);
-        mainCam.transform.position = new Vector3(20f, 25f, 25f);
+        mainCam.transform.rotation = Quaternion.Euler(30, -150, 0);
+        mainCam.transform.position = new Vector3(23.4f, 28.1f, 38.4f);
         mainCam.orthographicSize = 10;
     }
 }

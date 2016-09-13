@@ -40,8 +40,12 @@ public class ClickScript : MonoBehaviour {
         vect.Set(vect.x / a, vect.y / b, vect.z / c);
     }
 
+
+
     void OnMouseDown()
     {
+        DistClickScript.clickElement(this.transform.localPosition);
+        El = this.gameObject.name;
         Vector3 vect = new Vector3(this.transform.localPosition.x,
             this.transform.localPosition.y,this.transform.localPosition.z);
         YZSwap(ref vect);

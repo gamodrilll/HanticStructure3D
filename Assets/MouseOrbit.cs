@@ -5,6 +5,8 @@ public class MouseOrbit : MonoBehaviour {
     // Mouse buttons in the same order as Unity
     public enum MouseButton { Left = 0, Right = 1, Middle = 2, None = 3 }
 
+    public Transform target;
+
     [System.Serializable]
     // Handles left modifiers keys (Alt, Ctrl, Shift)
     public class Modifiers
@@ -52,6 +54,8 @@ public class MouseOrbit : MonoBehaviour {
         }
     }
 
+
+
     // Yaw default configuration
     public MouseControlConfiguration yaw = new MouseControlConfiguration { mouseButton = MouseButton.Right, sensitivity = 10F };
 
@@ -83,12 +87,14 @@ public class MouseOrbit : MonoBehaviour {
         if (yaw.isActivated())
         {
             float rotationX = Input.GetAxis(mouseHorizontalAxisName) * yaw.sensitivity;
-            transform.Rotate(0, rotationX, 0);
+            transform.Translate(rotationX, 0, 0);
+            transform.LookAt(target);
         }
         if (pitch.isActivated())
         {
             float rotationY = Input.GetAxis(mouseVerticalAxisName) * pitch.sensitivity;
-            transform.Rotate(-rotationY, 0, 0);
+            transform.Translate(0, rotationY, 0);
+            transform.LookAt(target);
         }
         if (roll.isActivated())
         {
@@ -121,6 +127,7 @@ public class MouseOrbit : MonoBehaviour {
             if (cam.orthographicSize - translateZ > 3)
                 cam.orthographicSize -= translateZ;
         }
+        
     }
  
 

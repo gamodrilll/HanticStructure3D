@@ -4,7 +4,53 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+public static class Info
+{
+    public static List<GameObject> bors1;
+    public static List<GameObject> bors2;
+    public static List<GameObject> scandiums;
+    public static List<GameObject> lantans;
+    public static List<GameObject> oxygens;
+    public static GameObject borders;
+
+    public static void DrawLine(GameObject obj, Vector3[] points)
+    {
+        LineRenderer lr;
+        if (obj.GetComponent<LineRenderer>() == null)
+        {
+            lr = obj.AddComponent<LineRenderer>();
+        } else
+        {
+            lr = obj.GetComponent<LineRenderer>();
+            lr.enabled = true;
+        }
+        lr.material = Info.borders.GetComponent<Material>();
+        lr.material.color = Color.black;
+        lr.SetWidth(0.05F, 0.05F);
+        lr.SetVertexCount(points.Length);
+        lr.SetPositions(points);
+    }
+
+    public static float distance(Vector3 v1, Vector3 v2)
+    {
+        float d = Mathf.Sqrt((v1.x - v2.x) * (v1.x - v2.x)
+            + (v1.y - v2.y) * (v1.y - v2.y) + (v1.z - v2.z) * (v1.z - v2.z));
+
+        return d;
+    }
+}
+
 public class CreateElementsScript : MonoBehaviour {
+
+    CreateElementsScript():base()
+    {
+        Info.bors1 = new List<GameObject>();
+        Info.bors2 = new List<GameObject>();
+        Info.lantans = new List<GameObject>();
+        Info.scandiums = new List<GameObject>();
+        Info.oxygens = new List<GameObject>();
+    }
+
     public GameObject LaPrefab;
     public GameObject ScPrefab;
     public GameObject B1Prefab;
@@ -57,7 +103,9 @@ public class CreateElementsScript : MonoBehaviour {
         vect.y = vect.y < 0 ? vect.y + 1 : vect.y > 1 ? vect.y - 1 : vect.y;
         vect.z = vect.z < 0 ? vect.z + 1 : vect.z > 1 ? vect.z - 1 : vect.z;
     }
+
     private float alpha = 120;
+
     void transToUSC(ref Vector3 vect)
     {
         float alphaInRad = 2*Mathf.PI/360*alpha;
@@ -72,16 +120,17 @@ public class CreateElementsScript : MonoBehaviour {
         vect.y = k;
     }
 
-    void ReplicateItem(GameObject obj,Vector3 locate)
+    List<GameObject> ReplicateItem(GameObject obj,Vector3 locate)
     {
+        List<GameObject> thisAtoms = new List<GameObject>();
         List<Vector3> list = new List<Vector3>();
         foreach (var rep in replications)
             list.Add(rep(locate));
         
         list = addAxesElement(list);
-        foreach (var i in list)
+        for(int i=1; i <=list.ToArray().Length; i++)
         {
-            Vector3 el = i;
+            Vector3 el = list[i-1];
             normalize(ref el);
             Scale(ref el);
             transToUSC(ref el);
@@ -89,9 +138,11 @@ public class CreateElementsScript : MonoBehaviour {
             if (HaveElement(el))
                 continue;
             GameObject NewObj = (GameObject)Instantiate(obj, el, Quaternion.identity);
+            NewObj.name = NewObj.tag +" " + i.ToString();
             NewObj.transform.parent = this.transform;
+            thisAtoms.Add(NewObj);
         }
-
+        return thisAtoms;
     }
 
     private List<Vector3> addAxesElement(List<Vector3> list)
@@ -134,26 +185,25 @@ public class CreateElementsScript : MonoBehaviour {
         for (int j = 0; j < count; j++)
         {
             Transform tr = this.transform.GetChild(j);
-            if (tr.localPosition == el)
+            if (Math.Abs(tr.localPosition.x - el.x) < 0.05
+                && Math.Abs(tr.localPosition.y - el.y) < 0.05 
+                && Math.Abs(tr.localPosition.z - el.z) < 0.05 )
                 return true;
         }
         return false;
     }
-
-
     // Use this for initialization
     void Start () {
         repCreating();
-        ReplicateItem(LaPrefab, new Vector3(1f / 3, 2f / 3, 2f / 3));
-        ReplicateItem(ScPrefab, new Vector3(0.1179f, 1f / 3, 1f / 3));
-        ReplicateItem(B1Prefab, new Vector3(0f, 0.5487f, 1f / 2));
-        ReplicateItem(B2Prefab, new Vector3(0f, 0f, 1f / 2));
-        ReplicateItem(OPrefab, new Vector3(0.1406f, 0.6863f,0.4818f));
-        ReplicateItem(OPrefab, new Vector3(0f, 0.412f, 0.5f));
-        ReplicateItem(OPrefab, new Vector3(0.140f, 0.1398f, 0.5f));
-
-
-	}
+        Info.lantans = ReplicateItem(LaPrefab, new Vector3(1f / 3, 2f / 3, 2f / 3));
+        Info.scandiums = ReplicateItem(ScPrefab, new Vector3(0.1179f, 1f / 3, 1f / 3));
+        Info.bors1 = ReplicateItem(B1Prefab, new Vector3(0f, 0.5487f, 1f / 2));
+        Info.bors2 = ReplicateItem(B2Prefab, new Vector3(0f, 0f, 1f / 2));
+        Info.oxygens =  ReplicateItem(OPrefab, new Vector3(0.1406f, 0.6863f,0.4818f));
+        Info.oxygens.AddRange(ReplicateItem(OPrefab, new Vector3(0f, 0.412f, 0.5f)));
+        Info.oxygens.AddRange(ReplicateItem(OPrefab, new Vector3(0.140f, 0.1398f, 0.5f)));
+        Info.borders = GameObject.FindGameObjectWithTag("Borders");
+    }
 	
 	// Update is called once per frame
 	void Update () {

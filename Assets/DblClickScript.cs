@@ -33,13 +33,9 @@ public class DblClickScript : MonoBehaviour
     }
 
 
-    private float a = 9.819f;
-    private float b = 9.819f;
-    private float c = 7.987f;
-
     void deScale(ref Vector3 vect)
     {
-        vect.Set(vect.x / a, vect.y / b, vect.z / c);
+        vect.Set(vect.x / Info.a, vect.y / Info.b, vect.z / Info.c);
     }
 
     void OnMouseDown()
@@ -81,14 +77,14 @@ public class DblClickScript : MonoBehaviour
     void OnDoubleClick()
     {
         HideElements();
-        GameObject[] oxygens = GameObject.FindGameObjectsWithTag("Oxygen");
+        GameObject[] oxygens = Info.oxygens.ToArray();
         float[] dists = new float[oxygens.Length];
         for (int i = 0; i < oxygens.Length; i++)
         {
             dists[i] = distance(this.transform.position, oxygens[i].transform.position);
         }
         Array.Sort(dists, oxygens);
-        if (this.gameObject.tag == "Lantan" || this.gameObject.tag == "Scandium")
+        if (this.gameObject.tag == "La" || this.gameObject.tag == "Sc" || this.gameObject.tag == "Nd")
         #region La Sc
         {
             for (int i = 6; i < oxygens.Length; i++)
@@ -141,6 +137,7 @@ public class DblClickScript : MonoBehaviour
                 getVec(oxygens[0])};
             Info.DrawLine(this.gameObject, coords);
         }
+        Info.scr.setCenter(transform.localPosition);
     }
 
     private Vector3 getVec(GameObject gameObject)
@@ -156,12 +153,10 @@ public class DblClickScript : MonoBehaviour
         foreach (var bor in Info.bors2)
             if (bor.transform.position != this.transform.position)
                 bor.SetActive(false);
-        GameObject[] scandiums = GameObject.FindGameObjectsWithTag("Scandium");
-        foreach (var scandium in scandiums)
+        foreach (var scandium in Info.scandiums)
             if (scandium.transform.position != this.transform.position)
                 scandium.SetActive(false);
-        GameObject[] lantans = GameObject.FindGameObjectsWithTag("Lantan");
-        foreach (var la in lantans)
+        foreach (var la in Info.lantans)
             if (la.transform.position != this.transform.position)
                 la.SetActive(false);
         Info.borders.SetActive(false);

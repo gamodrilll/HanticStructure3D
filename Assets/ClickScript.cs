@@ -29,22 +29,17 @@ public class ClickScript : MonoBehaviour {
         text.text = "";
 	}
 	
-
-
-    private float a = 9.819f;
-    private float b = 9.819f;
-    private float c = 7.987f;
-
     void deScale(ref Vector3 vect)
     {
-        vect.Set(vect.x / a, vect.y / b, vect.z / c);
+        vect.Set(vect.x / Info.a, vect.y / Info.b, vect.z / Info.c);
     }
 
 
 
     void OnMouseDown()
     {
-        DistClickScript.clickElement(this.transform.localPosition);
+        AnglButtonScript.clickElement(this.transform.localPosition, this.name);
+        DistClickScript.clickElement(this.transform.localPosition, this.name);
         El = this.gameObject.name;
         Vector3 vect = new Vector3(this.transform.localPosition.x,
             this.transform.localPosition.y,this.transform.localPosition.z);
@@ -53,8 +48,9 @@ public class ClickScript : MonoBehaviour {
         //deScale(ref vect);
         text.text =El +" x: " +  vect.x.ToString("F3") + " y: "
             + vect.y.ToString("F3") + " z: " +  vect.z.ToString("F3")
-            + " x/a: " + (vect.x/a) .ToString("F3") + " y/b: "
-            + (vect.y/b).ToString("F3") + " z/c: " + (vect.z/c).ToString("F3");
+            + " x/a: " + (vect.x/Info.a) .ToString("F3") + " y/b: "
+            + (vect.y/ Info.b).ToString("F3") + " z/c: " + (vect.z/ Info.c).ToString("F3");
+        Info.logFile.WriteLine(text.text);
     }
 
 }

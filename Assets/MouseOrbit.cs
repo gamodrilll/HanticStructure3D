@@ -5,6 +5,8 @@ public class MouseOrbit : MonoBehaviour {
     // Mouse buttons in the same order as Unity
     public enum MouseButton { Left = 0, Right = 1, Middle = 2, None = 3 }
 
+    public enum Arrow {None = 0,LeftRight= 1, UpDowh = 2}
+
     public Transform target;
 
     [System.Serializable]
@@ -30,12 +32,30 @@ public class MouseOrbit : MonoBehaviour {
 
         public bool activate;
         public MouseButton mouseButton;
+        public Arrow arrow;
         public Modifiers modifiers;
         public float sensitivity;
 
         public bool isActivated()
         {
-            return activate && Input.GetMouseButton((int)mouseButton) && modifiers.checkModifiers();
+            KeyCode keypos = KeyCode.None;
+            KeyCode keyneg = KeyCode.None;
+            #region Choose of button
+            switch (arrow)
+            {
+                case Arrow.LeftRight:
+                    keypos = KeyCode.LeftArrow;
+                    keyneg = KeyCode.RightArrow;
+                    break;
+                case Arrow.UpDowh:
+                    keypos = KeyCode.UpArrow;
+                    keyneg = KeyCode.DownArrow;
+                    break;
+            }
+            #endregion
+            return activate && (Input.GetMouseButton((int)mouseButton)  ||
+                Input.GetKey(keypos) ||
+                Input.GetKey(keyneg)) && modifiers.checkModifiers();
         }
     }
 
@@ -108,9 +128,21 @@ public class MouseOrbit : MonoBehaviour {
             transform.Translate(0, translateY, 0);
         }
 
+        if (verticalTranslation.isActivated())
+        {
+            float translateY = Input.GetAxis("Vertical") * verticalTranslation.sensitivity;
+            transform.Translate(0, translateY, 0);
+        }
+
         if (horizontalTranslation.isActivated())
         {
             float translateX = Input.GetAxis(mouseHorizontalAxisName) * horizontalTranslation.sensitivity;
+            transform.Translate(translateX, 0, 0);
+        }
+
+        if (horizontalTranslation.isActivated())
+        {
+            float translateX = Input.GetAxis("Horizontal") * horizontalTranslation.sensitivity;
             transform.Translate(translateX, 0, 0);
         }
 

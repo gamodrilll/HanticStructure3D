@@ -46,8 +46,7 @@ public class DblClickScript : MonoBehaviour
         transToOrt(ref vect);
         deScale(ref vect);
 
-        if (((Time.time - doubleClickStart) < 0.3f) && vect.x != 0 && vect.x != 1
-            && vect.y != 0 && vect.y != 1 && vect.z != 0 && vect.z != 1)
+        if (((Time.time - doubleClickStart) < 0.3f))
         {
             OnDoubleClick();
             doubleClickStart = -1;
@@ -87,6 +86,10 @@ public class DblClickScript : MonoBehaviour
         if (this.gameObject.tag == "La" || this.gameObject.tag == "Sc" || this.gameObject.tag == "Nd")
         #region La Sc
         {
+            for (int i = 0; i < 6; i++)
+            {
+                oxygens[i].SetActive(true);
+            }
             for (int i = 6; i < oxygens.Length; i++)
             {
                 oxygens[i].SetActive(false);
@@ -126,6 +129,10 @@ public class DblClickScript : MonoBehaviour
         #endregion
         else
         {
+            for (int i = 0; i < 3; i++)
+            {
+                oxygens[i].SetActive(true);
+            }
             for (int i = 3; i < oxygens.Length; i++)
             {
                 oxygens[i].SetActive(false);

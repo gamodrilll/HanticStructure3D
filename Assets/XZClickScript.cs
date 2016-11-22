@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using UnityEngine.SceneManagement;
 using System;
+using System.Collections.Generic;
 
 public class XZClickScript : MonoBehaviour
 {
@@ -65,16 +65,25 @@ public class XZClickScript : MonoBehaviour
 
     private void ShowAll()
     {
-        foreach (var bor in Info.bors1)
-            bor.SetActive(true);
-        foreach (var bor in Info.bors2)
-            bor.SetActive(true);
-        foreach (var scandium in Info.scandiums)
-            scandium.SetActive(true);
-        foreach (var la in Info.lantans)
-            la.SetActive(true);
-        foreach (var ox in Info.oxygens)
-            ox.SetActive(true);
+        List<GameObject> allElements = new List<GameObject>();
+        allElements.AddRange(Info.bors1);
+        allElements.AddRange(Info.bors2);
+        allElements.AddRange(Info.scandiums);
+        allElements.AddRange(Info.lantans);
+        allElements.AddRange(Info.oxygens);
+        foreach (var el in allElements)
+        {
+            Vector3 loc = new Vector3(el.transform.localPosition.x, el.transform.localPosition.y,
+                el.transform.localPosition.z);
+            Info.YZSwap(ref loc);
+            Info.transToOrt(ref loc);
+            Info.deScale(ref loc);
+            if (loc.x >= 0 && loc.x <= 1 && loc.y >= 0
+                && loc.y <= 1 && loc.z >= 0 && loc.z <= 1)
+                el.SetActive(true);
+            else
+                el.SetActive(false);
+        }
         Info.borders.SetActive(true);
 
     }

@@ -46,6 +46,50 @@ public static class Info
         return d;
     }
     public static CreateElementsScript scr = null;
+
+    /* Получает на вход вектор с координатами 0..1
+    * А возвращет новый вектор (0..a,0..b,0..c)
+    */
+    public static void Scale(ref Vector3 vect)
+    {
+        vect.Set(vect.x * Info.a, vect.y * Info.b, vect.z * Info.c);
+    }
+
+    public static void normalize(ref Vector3 vect)
+    {
+        vect.x = vect.x < 0 ? vect.x + 1 : vect.x > 1 ? vect.x - 1 : vect.x;
+        vect.y = vect.y < 0 ? vect.y + 1 : vect.y > 1 ? vect.y - 1 : vect.y;
+        vect.z = vect.z < 0 ? vect.z + 1 : vect.z > 1 ? vect.z - 1 : vect.z;
+    }
+
+    public static float alpha = 120;
+
+    public static void transToUSC(ref Vector3 vect)
+    {
+        float alphaInRad = 2 * Mathf.PI / 360 * alpha;
+        vect.x = vect.x + vect.y * Mathf.Cos(alphaInRad);
+        vect.y = vect.y * Mathf.Sin(alphaInRad);
+    }
+
+    public static void YZSwap(ref Vector3 vect)
+    {
+        float k = vect.z;
+        vect.z = vect.y;
+        vect.y = k;
+    }
+
+    public static void transToOrt(ref Vector3 vect)
+    {
+        float alphaInRad = 2 * Mathf.PI / 360 * alpha;
+        vect.y = vect.y / Mathf.Sin(alphaInRad);
+        vect.x = vect.x - vect.y * Mathf.Cos(alphaInRad);
+
+    }
+
+    public static void deScale(ref Vector3 vect)
+    {
+        vect.Set(vect.x / Info.a, vect.y / Info.b, vect.z / Info.c);
+    }
 }
 
 public class CreateElementsScript : MonoBehaviour {
@@ -102,38 +146,9 @@ public class CreateElementsScript : MonoBehaviour {
     }
 
    
-    /* Получает на вход вектор с координатами 0..1
-     * А возвращет новый вектор (0..a,0..b,0..c)
-     */
-    void Scale(ref Vector3 vect)
-    {
-        vect.Set(vect.x * Info.a, vect.y * Info.b, vect.z * Info.c);
-    }
 
-    void normalize(ref Vector3 vect)
-    {
-        vect.x = vect.x < 0 ? vect.x + 1 : vect.x > 1 ? vect.x - 1 : vect.x;
-        vect.y = vect.y < 0 ? vect.y + 1 : vect.y > 1 ? vect.y - 1 : vect.y;
-        vect.z = vect.z < 0 ? vect.z + 1 : vect.z > 1 ? vect.z - 1 : vect.z;
-    }
 
-    private float alpha = 120;
-
-    void transToUSC(ref Vector3 vect)
-    {
-        float alphaInRad = 2*Mathf.PI/360*alpha;
-        vect.x = vect.x + vect.y * Mathf.Cos(alphaInRad);
-        vect.y = vect.y * Mathf.Sin(alphaInRad);
-    }
-
-    void YZSwap(ref Vector3 vect)
-    {
-        float k = vect.z;
-        vect.z = vect.y;
-        vect.y = k;
-    }
-
-    List<GameObject> ReplicateItem(GameObject obj,Vector3 locate)
+    List<GameObject> ReplicateItem(GameObject obj,Vector3 locate, bool addHiden)
     {
         List<GameObject> thisAtoms = new List<GameObject>();
         List<Vector3> list = new List<Vector3>();
@@ -148,17 +163,48 @@ public class CreateElementsScript : MonoBehaviour {
         for(int i=1; i <=list.Count; i++)
         {
             Vector3 el = list[i-1];
-            normalize(ref el);
-            Scale(ref el);
-            transToUSC(ref el);
-            YZSwap(ref el);
+            Info.normalize(ref el);
+            Info.Scale(ref el);
+            Info.transToUSC(ref el);
+            Info.YZSwap(ref el);
             if (HaveElement(el))
                 continue;
-            GameObject NewObj = (GameObject)Instantiate(obj, el, Quaternion.identity);
-            NewObj.name = "";
-            NewObj.name = NewObj.tag +" " + listInd[i-1].ToString();
-            NewObj.transform.parent = this.transform;
-            thisAtoms.Add(NewObj);
+            if (addHiden == false)
+            {
+                GameObject NewObj = (GameObject)Instantiate(obj, el, Quaternion.identity);
+                NewObj.name = "";
+                NewObj.name = NewObj.tag + " " + listInd[i - 1].ToString();
+                NewObj.transform.parent = this.transform;
+                thisAtoms.Add(NewObj);
+            }
+            else
+            {
+                for (float x = -1; x <= 1; x++)
+                    for (float y = -1; y <= 1; y++)
+                        for (float z = -1; z <= 1; z++)
+                        {
+                            Vector3 add = new Vector3(x, y, z);
+                            Info.Scale(ref add);
+                            Info.transToUSC(ref add);
+                            Info.YZSwap(ref add);
+                            add += el;
+                            GameObject NewObj = (GameObject)Instantiate(obj, add, Quaternion.identity);
+                            NewObj.name = "";
+                            Vector3 addSc = new Vector3(add.x,add.y,add.z);
+                            Info.YZSwap(ref addSc);
+                            Info.transToOrt(ref addSc);
+                            Info.deScale(ref addSc);
+                            if (addSc.x >= 0 && addSc.x <= 1 && addSc.y >= 0 
+                                && addSc.y <= 1 && addSc.z >= 0 && addSc.z <= 1)
+                                NewObj.SetActive(true);
+                            else
+                                NewObj.SetActive(false);
+                            NewObj.name = NewObj.tag + " " + listInd[i - 1].ToString();
+                            NewObj.transform.parent = this.transform;
+                            thisAtoms.Add(NewObj);
+                 
+                        }
+            }
         }
         return thisAtoms;
     }
@@ -263,54 +309,6 @@ public class CreateElementsScript : MonoBehaviour {
         return false;
     }
 
-    public void CreateLantans()
-    {
-        var children = new List<GameObject>();
-        foreach (Transform child in elements.transform) children.Add(child.gameObject);
-        children.ForEach(child => DestroyImmediate(child));
-        Info.a = 9.819f;
-        Info.b = 9.819f;
-        Info.c = 7.987f;
-        Info.lantans.Clear();
-        Info.scandiums.Clear();
-        Info.bors1.Clear();
-        Info.bors2.Clear();
-        Info.oxygens.Clear();
-        Info.lantans = ReplicateItem(LaPrefab, new Vector3(1f / 3, 2f / 3, 2f / 3));
-        Info.scandiums = ReplicateItem(ScPrefab, new Vector3(0.1179f, 1f / 3, 1f / 3));
-        Info.bors1 = ReplicateItem(B1Prefab, new Vector3(0f, 0.5487f, 1f / 2));
-        Info.bors2 = ReplicateItem(B2Prefab, new Vector3(0f, 0f, 1f / 2));
-        Info.oxygens = ReplicateItem(OPrefab, new Vector3(0.1406f, 0.6863f, 0.4818f));
-        Info.oxygens.AddRange(ReplicateItem(OPrefab, new Vector3(0f, 0.412f, 0.5f)));
-        Info.oxygens.AddRange(ReplicateItem(OPrefab, new Vector3(0.140f, 0.1398f, 0.5f)));
-        setCenter(); 
-    }
-
-    public void CreateNeodims()
-    {
-        var children = new List<GameObject>();
-        foreach (Transform child in transform) children.Add(child.gameObject);
-        children.ForEach(child => DestroyImmediate(child));
-        Info.a = 9.76333f;
-        Info.b = 9.76333f;
-        Info.c = 7.91922f;
-        Info.lantans.Clear();
-        Debug.Log("lc =" + Info.lantans.Count);
-        Info.scandiums.Clear();
-        Info.bors1.Clear();
-        Info.bors2.Clear();
-        Info.oxygens.Clear();
-        Debug.Log(this.transform.childCount);
-        Info.lantans = ReplicateItem(NdPrefab, new Vector3(0f, 0f, 0f));
-        Debug.Log("lc =" + Info.lantans.Count);
-        Info.scandiums = ReplicateItem(ScPrefab, new Vector3(0.54572f, 0f, 0f));
-        Info.bors1 = ReplicateItem(B1Prefab, new Vector3(0f, 0f, 1f / 2));
-        Info.bors2 = ReplicateItem(B2Prefab, new Vector3(0.44682f, 0f, 1f / 2));
-        Info.oxygens = ReplicateItem(OPrefab, new Vector3(0.587313f, 0f, 0.5f));
-        Info.oxygens.AddRange(ReplicateItem(OPrefab, new Vector3(0.45796f, 0.14626f, 0.52047f)));
-        Info.oxygens.AddRange(ReplicateItem(OPrefab, new Vector3(0.140f, 0f, 0.5f)));
-    }
-
     public void setCenter(Vector3 vec)
     {
         hantic.transform.localPosition = vec;
@@ -321,9 +319,9 @@ public class CreateElementsScript : MonoBehaviour {
     public void setCenter()
     {
         Vector3 vec = new Vector3(0.5f, 0.5f, 0.5f);
-        Scale(ref vec);
-        transToUSC(ref vec);
-        YZSwap(ref vec);
+        Info.Scale(ref vec);
+        Info.transToUSC(ref vec);
+        Info.YZSwap(ref vec);
         hantic.transform.localPosition = vec;
         elements.transform.localPosition = -vec;
         borders.transform.localPosition = -vec;
@@ -388,16 +386,17 @@ public class CreateElementsScript : MonoBehaviour {
         Element b1 = cur.elList.Find((Element i) => i.type == elementType.Bor1);
         Element b2 = cur.elList.Find((Element i) => i.type == elementType.Bor2);
         List<Element> o = cur.elList.FindAll((Element i) => i.type == elementType.Oxygen);
+        bool f = true;
         LaPrefab.name = la.elementName;
         ScPrefab.name = sc.elementName;
-        Info.lantans = ReplicateItem(LaPrefab, new Vector3(la.x, la.y,la.z));
-        Info.scandiums = ReplicateItem(ScPrefab, new Vector3(sc.x, sc.y, sc.z));
-        Info.bors1 = ReplicateItem(B1Prefab, new Vector3(b1.x, b1.y, b1.z));
-        Info.bors2 = ReplicateItem(B2Prefab, new Vector3(b2.x, b2.y, b2.z));
-        Info.oxygens = ReplicateItem(OPrefab, new Vector3(o[0].x, o[0].y, o[0].z));
+        Info.lantans = ReplicateItem(LaPrefab, new Vector3(la.x, la.y,la.z),f);
+        Info.scandiums = ReplicateItem(ScPrefab, new Vector3(sc.x, sc.y, sc.z),f);
+        Info.bors1 = ReplicateItem(B1Prefab, new Vector3(b1.x, b1.y, b1.z),f);
+        Info.bors2 = ReplicateItem(B2Prefab, new Vector3(b2.x, b2.y, b2.z),f);
+        Info.oxygens = ReplicateItem(OPrefab, new Vector3(o[0].x, o[0].y, o[0].z),f);
         for(int i = 1; i < o.Count; i++)
         {
-            Info.oxygens.AddRange(ReplicateItem(OPrefab, new Vector3(o[i].x, o[i].y, o[i].z)));
+            Info.oxygens.AddRange(ReplicateItem(OPrefab, new Vector3(o[i].x, o[i].y, o[i].z),f));
         }
         setCenter();
     }

@@ -19,10 +19,11 @@ public class Compound
     }
 }
 
+[System.Serializable]
 public class Element
 {
     public elementType type;
-    public string elementName;
+    public string elenemtName;
     public float xn, yn, zn, xd,yd,zd;
     public float x { get { return xn / xd; } }
     public float y { get { return yn / yd; } }

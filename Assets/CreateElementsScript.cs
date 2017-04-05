@@ -148,7 +148,7 @@ public class CreateElementsScript : MonoBehaviour {
    
 
 
-    List<GameObject> ReplicateItem(GameObject obj,Vector3 locate, bool addHiden)
+    List<GameObject> ReplicateItem(GameObject obj,Vector3 locate, bool addHiden, string Name)
     {
         List<GameObject> thisAtoms = new List<GameObject>();
         List<Vector3> list = new List<Vector3>();
@@ -159,7 +159,6 @@ public class CreateElementsScript : MonoBehaviour {
             listInd.Add(i);
         
         list = addAxesElement(list, listInd);
-        Debug.Log(list.ToArray().Length);
         for(int i=1; i <=list.Count; i++)
         {
             Vector3 el = list[i-1];
@@ -173,7 +172,7 @@ public class CreateElementsScript : MonoBehaviour {
             {
                 GameObject NewObj = (GameObject)Instantiate(obj, el, Quaternion.identity);
                 NewObj.name = "";
-                NewObj.name = NewObj.tag + " " + listInd[i - 1].ToString();
+                NewObj.name = Name + " " + listInd[i - 1].ToString();
                 NewObj.transform.parent = this.transform;
                 thisAtoms.Add(NewObj);
             }
@@ -194,12 +193,12 @@ public class CreateElementsScript : MonoBehaviour {
                             Info.YZSwap(ref addSc);
                             Info.transToOrt(ref addSc);
                             Info.deScale(ref addSc);
-                            if (addSc.x >= 0 && addSc.x <= 1 && addSc.y >= 0 
-                                && addSc.y <= 1 && addSc.z >= 0 && addSc.z <= 1)
+                            if (addSc.x >= -0.001 && addSc.x <= 1.001 && addSc.y >= -0.001
+                                    && addSc.y <= 1.001 && addSc.z >= -0.001 && addSc.z <= 1.001)
                                 NewObj.SetActive(true);
                             else
                                 NewObj.SetActive(false);
-                            NewObj.name = NewObj.tag + " " + listInd[i - 1].ToString();
+                            NewObj.name = Name + " " + listInd[i - 1].ToString();
                             NewObj.transform.parent = this.transform;
                             thisAtoms.Add(NewObj);
                  
@@ -336,6 +335,7 @@ public class CreateElementsScript : MonoBehaviour {
         FindCompounds();
         CreateCompound(0);
         Info.logFile.AutoFlush = true;
+        Server.start1();
     }
 
     private void FindCompounds()
@@ -387,17 +387,28 @@ public class CreateElementsScript : MonoBehaviour {
         Element b2 = cur.elList.Find((Element i) => i.type == elementType.Bor2);
         List<Element> o = cur.elList.FindAll((Element i) => i.type == elementType.Oxygen);
         bool f = true;
-        LaPrefab.name = la.elementName;
-        ScPrefab.name = sc.elementName;
-        Info.lantans = ReplicateItem(LaPrefab, new Vector3(la.x, la.y,la.z),f);
-        Info.scandiums = ReplicateItem(ScPrefab, new Vector3(sc.x, sc.y, sc.z),f);
-        Info.bors1 = ReplicateItem(B1Prefab, new Vector3(b1.x, b1.y, b1.z),f);
-        Info.bors2 = ReplicateItem(B2Prefab, new Vector3(b2.x, b2.y, b2.z),f);
-        Info.oxygens = ReplicateItem(OPrefab, new Vector3(o[0].x, o[0].y, o[0].z),f);
+        LaPrefab.name = la.elenemtName;
+        ScPrefab.name = sc.elenemtName;
+        Info.lantans = ReplicateItem(LaPrefab, new Vector3(la.x, la.y, la.z), f, la.elenemtName[0].ToString()+ la.elenemtName[1].ToString());
+        Info.scandiums = ReplicateItem(ScPrefab, new Vector3(sc.x, sc.y, sc.z),f, sc.elenemtName[0].ToString() + sc.elenemtName[1].ToString());
+        Info.bors1 = ReplicateItem(B1Prefab, new Vector3(b1.x, b1.y, b1.z),f, "B1");
+        Info.bors2 = ReplicateItem(B2Prefab, new Vector3(b2.x, b2.y, b2.z),f,"B2");
+        Info.oxygens = ReplicateItem(OPrefab, new Vector3(o[0].x, o[0].y, o[0].z),f, "O");
         for(int i = 1; i < o.Count; i++)
         {
-            Info.oxygens.AddRange(ReplicateItem(OPrefab, new Vector3(o[i].x, o[i].y, o[i].z),f));
+            Info.oxygens.AddRange(ReplicateItem(OPrefab, new Vector3(o[i].x, o[i].y, o[i].z),f, "O"));
         }
+
+        Text LaText = GameObject.Find("LaText").GetComponent<Text>();
+        LaText.text = la.elenemtName[0].ToString() + la.elenemtName[1].ToString();
+        Text ScText = GameObject.Find("ScText").GetComponent<Text>();
+        ScText.text = sc.elenemtName[0].ToString() + sc.elenemtName[1].ToString();
+        Text B1Text = GameObject.Find("B1Text").GetComponent<Text>();
+        B1Text.text = "B1";
+        Text B2Text = GameObject.Find("B2Text").GetComponent<Text>();
+        B2Text.text = "B2";
+        Text OText = GameObject.Find("OText").GetComponent<Text>();
+        OText.text = "O";
         setCenter();
     }
 }

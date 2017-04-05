@@ -7,6 +7,7 @@ public class ValChangedScript : MonoBehaviour {
 
     void valueChanged(int val)
     {
+        Info.borders.SetActive(true);
         Info.scr.CreateCompound(val);
     }
 

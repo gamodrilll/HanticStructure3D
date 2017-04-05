@@ -83,8 +83,8 @@ public class DblClickScript : MonoBehaviour
             dists[i] = distance(this.transform.position, oxygens[i].transform.position);
         }
         Array.Sort(dists, oxygens);
-        if (this.gameObject.tag == "La" || this.gameObject.tag == "Sc" || this.gameObject.tag == "Nd")
-        #region La Sc
+        if (this.gameObject.tag == "La"  || this.gameObject.tag == "Nd")
+        #region La 
         {
             for (int i = 0; i < 6; i++)
             {
@@ -127,6 +127,52 @@ public class DblClickScript : MonoBehaviour
             Info.DrawLine(this.gameObject, coords);
         }
         #endregion
+        else
+        if ( this.gameObject.tag == "Sc")
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                oxygens[i].SetActive(true);
+            }
+            for (int i = 6; i < oxygens.Length; i++)
+            {
+                oxygens[i].SetActive(false);
+            }
+            GameObject[] ox = new GameObject[6];
+            for (int i = 0; i <= 5; i++)
+            {
+                ox[i] = oxygens[i];
+            }
+            float[] dist = new float[6];
+            for (int i = 0; i <= 5; i++)
+                dist[i] = (ox[i].transform.localPosition).magnitude;
+            Array.Sort(dist, ox);
+            Vector3 vec = getVec(ox[2]) - getVec(ox[1]), vec2 = getVec(ox[3]) - getVec(ox[2]);
+            if (vec2.magnitude<vec.magnitude)
+            {
+                GameObject temp = ox[1];
+                ox[1] = ox[3];
+                ox[3] = temp;
+            }
+            vec = getVec(ox[3]) - getVec(ox[2]); vec2 = getVec(ox[4]) - getVec(ox[2]);
+            if (vec2.magnitude < vec.magnitude)
+            {
+                GameObject temp = ox[4];
+                ox[4] = ox[3];
+                ox[3] = temp;
+            }
+
+            GameObject[] ar1 = new GameObject[3];
+            Vector3[] coords = new Vector3[]
+            {
+                getVec(ox[0]),getVec(ox[1]), getVec(ox[2]),
+                getVec(ox[0]),getVec(ox[3]),getVec(ox[4]),
+                getVec(ox[0]),getVec(ox[4]),
+                getVec(ox[5]),getVec(ox[3]),getVec(ox[2]),
+                getVec(ox[5]),getVec(ox[1]),getVec(ox[4])
+            };
+            Info.DrawLine(this.gameObject, coords);
+        }
         else
         {
             for (int i = 0; i < 3; i++)

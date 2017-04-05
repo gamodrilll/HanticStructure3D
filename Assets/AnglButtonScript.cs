@@ -19,7 +19,7 @@ public class AnglButtonScript : MonoBehaviour {
     static Text res;
 
     public static Vector3 getVec(Vector3 a, Vector3 b)
-    {
+    {   
         return new Vector3(b.x - a.x, b.y - a.y, b.z - a.z);
     }
 
@@ -58,8 +58,8 @@ public class AnglButtonScript : MonoBehaviour {
 
         if (pos == 2)
         {
-            pos = 3;
-            text.text = "Angle";
+            pos = 0;
+            text.text = "Click first element";
             c = vec;
             infC = inf;
             vec1 = getVec(a, b);

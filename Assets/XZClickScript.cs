@@ -19,7 +19,6 @@ public class XZClickScript : MonoBehaviour
         XYBut.onClick.AddListener(onClickXY);
         ThreeDBut.onClick.AddListener(onClick3D);
         reset.onClick.AddListener(resetScene);
-        Debug.LogWarning("Work");
     }
 
 
@@ -78,8 +77,8 @@ public class XZClickScript : MonoBehaviour
             Info.YZSwap(ref loc);
             Info.transToOrt(ref loc);
             Info.deScale(ref loc);
-            if (loc.x >= 0 && loc.x <= 1 && loc.y >= 0
-                && loc.y <= 1 && loc.z >= 0 && loc.z <= 1)
+            if (loc.x >= -0.001 && loc.x <= 1.001 && loc.y >= -0.001
+                && loc.y <= 1.001 && loc.z >= -0.001 && loc.z <= 1.001)
                 el.SetActive(true);
             else
                 el.SetActive(false);

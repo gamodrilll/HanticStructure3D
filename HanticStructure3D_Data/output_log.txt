@@ -10,23 +10,22 @@ Default GameObject Tag: La already registered
 (Filename:  Line: 88)
 
 Begin MonoManager ReloadAssembly
-Platform assembly: D:\Rep\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading D:\Rep\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: D:\Rep\HanticStructure3D\HanticStructure3D_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading D:\Rep\HanticStructure3D\HanticStructure3D_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: D:\Rep\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading D:\Rep\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: D:\Rep\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading D:\Rep\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.571 seconds
-Platform assembly: D:\Rep\HanticStructure3D\HanticStructure3D_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: D:\Rep\HanticStructure3D\HanticStructure3D_Data\Managed\System.dll (this message is harmless)
-desktop: 1920x1080 60Hz; virtual: 4080x1350 at -2160,0
+Platform assembly: C:\Users\1\YandexDisk\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\1\YandexDisk\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\1\YandexDisk\HanticStructure3D\HanticStructure3D_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\1\YandexDisk\HanticStructure3D\HanticStructure3D_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\1\YandexDisk\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\1\YandexDisk\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\1\YandexDisk\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\1\YandexDisk\HanticStructure3D\HanticStructure3D_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.786 seconds
+Platform assembly: C:\Users\1\YandexDisk\HanticStructure3D\HanticStructure3D_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\1\YandexDisk\HanticStructure3D\HanticStructure3D_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
-XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
 <RI> Input initialized.
 <RI> Initialized touch support.
-IOException: Sharing violation on path D:\Rep\HanticStructure3D\log.txt
+IOException: Sharing violation on path C:\Users\1\YandexDisk\HanticStructure3D\log.txt
   at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean anonymous, FileOptions options) [0x00000] in <filename unknown>:0 
   at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share) [0x00000] in <filename unknown>:0 
   at System.IO.StreamWriter..ctor (System.String path, Boolean append, System.Text.Encoding encoding, Int32 bufferSize) [0x00000] in <filename unknown>:0 
@@ -37,12 +36,12 @@ Rethrow as TypeInitializationException: An exception was thrown by the type init
  
 (Filename:  Line: -1)
 
-UnloadTime: 21.360310 ms
+UnloadTime: 0.758329 ms
 Work
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
 
-IOException: Sharing violation on path D:\Rep\HanticStructure3D\log.txt
+IOException: Sharing violation on path C:\Users\1\YandexDisk\HanticStructure3D\log.txt
   at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean anonymous, FileOptions options) [0x00000] in <filename unknown>:0 
   at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share) [0x00000] in <filename unknown>:0 
   at System.IO.StreamWriter..ctor (System.String path, Boolean append, System.Text.Encoding encoding, Int32 bufferSize) [0x00000] in <filename unknown>:0 
@@ -50,120 +49,8 @@ IOException: Sharing violation on path D:\Rep\HanticStructure3D\log.txt
   at Info..cctor () [0x00000] in <filename unknown>:0 
 Rethrow as TypeInitializationException: An exception was thrown by the type initializer for Info
 
- 
-(Filename:  Line: -1)
-
-IOException: Sharing violation on path D:\Rep\HanticStructure3D\log.txt
-  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean anonymous, FileOptions options) [0x00000] in <filename unknown>:0 
-  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share) [0x00000] in <filename unknown>:0 
-  at System.IO.StreamWriter..ctor (System.String path, Boolean append, System.Text.Encoding encoding, Int32 bufferSize) [0x00000] in <filename unknown>:0 
-  at System.IO.StreamWriter..ctor (System.String path, Boolean append) [0x00000] in <filename unknown>:0 
-  at Info..cctor () [0x00000] in <filename unknown>:0 
-Rethrow as TypeInitializationException: An exception was thrown by the type initializer for Info
-  at UnityEngine.Events.InvokableCall.Invoke (System.Object[] args) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.InvokableCallList.Invoke (System.Object[] parameters) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.UnityEventBase.Invoke (System.Object[] parameters) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.UnityEvent.Invoke () [0x00000] in <filename unknown>:0 
-  at UnityEngine.UI.Button.Press () [0x00000] in <filename unknown>:0 
-  at UnityEngine.UI.Button.OnPointerClick (UnityEngine.EventSystems.PointerEventData eventData) [0x00000] in <filename unknown>:0 
-  at UnityEngine.EventSystems.ExecuteEvents.Execute (IPointerClickHandler handler, UnityEngine.EventSystems.BaseEventData eventData) [0x00000] in <filename unknown>:0 
-  at UnityEngine.EventSystems.ExecuteEvents.Execute[IPointerClickHandler] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.EventFunction`1 functor) [0x00000] in <filename unknown>:0 
-UnityEngine.DebugLogHandler:Internal_LogException(Exception, Object)
-UnityEngine.DebugLogHandler:LogException(Exception, Object)
-UnityEngine.Logger:LogException(Exception, Object)
-UnityEngine.Debug:LogException(Exception)
-UnityEngine.EventSystems.ExecuteEvents:Execute(GameObject, BaseEventData, EventFunction`1)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMousePress(MouseButtonEventData)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMouseEvent(Int32)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMouseEvent()
-UnityEngine.EventSystems.StandaloneInputModule:Process()
-UnityEngine.EventSystems.EventSystem:Update()
- 
-(Filename:  Line: -1)
-
-IOException: Sharing violation on path D:\Rep\HanticStructure3D\log.txt
-  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean anonymous, FileOptions options) [0x00000] in <filename unknown>:0 
-  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share) [0x00000] in <filename unknown>:0 
-  at System.IO.StreamWriter..ctor (System.String path, Boolean append, System.Text.Encoding encoding, Int32 bufferSize) [0x00000] in <filename unknown>:0 
-  at System.IO.StreamWriter..ctor (System.String path, Boolean append) [0x00000] in <filename unknown>:0 
-  at Info..cctor () [0x00000] in <filename unknown>:0 
-Rethrow as TypeInitializationException: An exception was thrown by the type initializer for Info
-  at UnityEngine.Events.InvokableCall.Invoke (System.Object[] args) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.InvokableCallList.Invoke (System.Object[] parameters) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.UnityEventBase.Invoke (System.Object[] parameters) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.UnityEvent.Invoke () [0x00000] in <filename unknown>:0 
-  at UnityEngine.UI.Button.Press () [0x00000] in <filename unknown>:0 
-  at UnityEngine.UI.Button.OnPointerClick (UnityEngine.EventSystems.PointerEventData eventData) [0x00000] in <filename unknown>:0 
-  at UnityEngine.EventSystems.ExecuteEvents.Execute (IPointerClickHandler handler, UnityEngine.EventSystems.BaseEventData eventData) [0x00000] in <filename unknown>:0 
-  at UnityEngine.EventSystems.ExecuteEvents.Execute[IPointerClickHandler] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.EventFunction`1 functor) [0x00000] in <filename unknown>:0 
-UnityEngine.DebugLogHandler:Internal_LogException(Exception, Object)
-UnityEngine.DebugLogHandler:LogException(Exception, Object)
-UnityEngine.Logger:LogException(Exception, Object)
-UnityEngine.Debug:LogException(Exception)
-UnityEngine.EventSystems.ExecuteEvents:Execute(GameObject, BaseEventData, EventFunction`1)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMousePress(MouseButtonEventData)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMouseEvent(Int32)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMouseEvent()
-UnityEngine.EventSystems.StandaloneInputModule:Process()
-UnityEngine.EventSystems.EventSystem:Update()
- 
-(Filename:  Line: -1)
-
-IOException: Sharing violation on path D:\Rep\HanticStructure3D\log.txt
-  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean anonymous, FileOptions options) [0x00000] in <filename unknown>:0 
-  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share) [0x00000] in <filename unknown>:0 
-  at System.IO.StreamWriter..ctor (System.String path, Boolean append, System.Text.Encoding encoding, Int32 bufferSize) [0x00000] in <filename unknown>:0 
-  at System.IO.StreamWriter..ctor (System.String path, Boolean append) [0x00000] in <filename unknown>:0 
-  at Info..cctor () [0x00000] in <filename unknown>:0 
-Rethrow as TypeInitializationException: An exception was thrown by the type initializer for Info
-  at UnityEngine.Events.InvokableCall.Invoke (System.Object[] args) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.InvokableCallList.Invoke (System.Object[] parameters) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.UnityEventBase.Invoke (System.Object[] parameters) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.UnityEvent.Invoke () [0x00000] in <filename unknown>:0 
-  at UnityEngine.UI.Button.Press () [0x00000] in <filename unknown>:0 
-  at UnityEngine.UI.Button.OnPointerClick (UnityEngine.EventSystems.PointerEventData eventData) [0x00000] in <filename unknown>:0 
-  at UnityEngine.EventSystems.ExecuteEvents.Execute (IPointerClickHandler handler, UnityEngine.EventSystems.BaseEventData eventData) [0x00000] in <filename unknown>:0 
-  at UnityEngine.EventSystems.ExecuteEvents.Execute[IPointerClickHandler] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.EventFunction`1 functor) [0x00000] in <filename unknown>:0 
-UnityEngine.DebugLogHandler:Internal_LogException(Exception, Object)
-UnityEngine.DebugLogHandler:LogException(Exception, Object)
-UnityEngine.Logger:LogException(Exception, Object)
-UnityEngine.Debug:LogException(Exception)
-UnityEngine.EventSystems.ExecuteEvents:Execute(GameObject, BaseEventData, EventFunction`1)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMousePress(MouseButtonEventData)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMouseEvent(Int32)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMouseEvent()
-UnityEngine.EventSystems.StandaloneInputModule:Process()
-UnityEngine.EventSystems.EventSystem:Update()
- 
-(Filename:  Line: -1)
-
-IOException: Sharing violation on path D:\Rep\HanticStructure3D\log.txt
-  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean anonymous, FileOptions options) [0x00000] in <filename unknown>:0 
-  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share) [0x00000] in <filename unknown>:0 
-  at System.IO.StreamWriter..ctor (System.String path, Boolean append, System.Text.Encoding encoding, Int32 bufferSize) [0x00000] in <filename unknown>:0 
-  at System.IO.StreamWriter..ctor (System.String path, Boolean append) [0x00000] in <filename unknown>:0 
-  at Info..cctor () [0x00000] in <filename unknown>:0 
-Rethrow as TypeInitializationException: An exception was thrown by the type initializer for Info
-  at UnityEngine.Events.InvokableCall.Invoke (System.Object[] args) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.InvokableCallList.Invoke (System.Object[] parameters) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.UnityEventBase.Invoke (System.Object[] parameters) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Events.UnityEvent.Invoke () [0x00000] in <filename unknown>:0 
-  at UnityEngine.UI.Button.Press () [0x00000] in <filename unknown>:0 
-  at UnityEngine.UI.Button.OnPointerClick (UnityEngine.EventSystems.PointerEventData eventData) [0x00000] in <filename unknown>:0 
-  at UnityEngine.EventSystems.ExecuteEvents.Execute (IPointerClickHandler handler, UnityEngine.EventSystems.BaseEventData eventData) [0x00000] in <filename unknown>:0 
-  at UnityEngine.EventSystems.ExecuteEvents.Execute[IPointerClickHandler] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.EventFunction`1 functor) [0x00000] in <filename unknown>:0 
-UnityEngine.DebugLogHandler:Internal_LogException(Exception, Object)
-UnityEngine.DebugLogHandler:LogException(Exception, Object)
-UnityEngine.Logger:LogException(Exception, Object)
-UnityEngine.Debug:LogException(Exception)
-UnityEngine.EventSystems.ExecuteEvents:Execute(GameObject, BaseEventData, EventFunction`1)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMousePress(MouseButtonEventData)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMouseEvent(Int32)
-UnityEngine.EventSystems.StandaloneInputModule:ProcessMouseEvent()
-UnityEngine.EventSystems.StandaloneInputModule:Process()
-UnityEngine.EventSystems.EventSystem:Update()
  
 (Filename:  Line: -1)
 
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 89c -> priority: 1 
+  Thread -> id: 1de0 -> priority: 1 

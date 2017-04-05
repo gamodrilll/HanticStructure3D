@@ -32,8 +32,8 @@ public class DistClickScript : MonoBehaviour {
 
         if (pos == 1)
         {
-            pos = 2;
-            text.text = "Distance";
+            pos = 0;
+            text.text = "Click first element";
             b = vec;
             infB = inf;
             res.text = "Dist between " + infA + " and " + infB + " is " 

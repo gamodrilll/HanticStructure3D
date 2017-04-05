@@ -5,6 +5,7 @@ using System.Collections;
 public class ClickScript : MonoBehaviour {
 
     private Text text;
+    private Text toolTip;
 
     public string El;
     void YZSwap(ref Vector3 vect)
@@ -22,12 +23,38 @@ public class ClickScript : MonoBehaviour {
         vect.x = vect.x - vect.y * Mathf.Cos(alphaInRad);
         
     }
-
+    
 	// Use this for initialization
 	void Start () {
         text = GameObject.Find("Canvas/ElInfo").GetComponent<Text>();
+        toolTip = GameObject.Find("Canvas/ToolTip").GetComponent<Text>();
         text.text = "";
 	}
+
+    void Update()
+    {
+       
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray,out hit)) //&& hit.collider.gameObject.name == "Yify")
+        {
+            string s = hit.collider.gameObject.name + " ";
+            Vector3 vect = new Vector3(hit.collider.gameObject.transform.localPosition.x,
+            hit.collider.gameObject.transform.localPosition.y, hit.collider.gameObject.transform.localPosition.z);
+            YZSwap(ref vect);
+            transToOrt(ref vect);
+            s += " x/a: " + (vect.x / Info.a).ToString("F3") + " \n y/b: "
+            + (vect.y / Info.b).ToString("F3") + " z/c: " + (vect.z / Info.c).ToString("F3");
+            toolTip.text = s;
+
+            toolTip.rectTransform.Translate(Input.mousePosition - toolTip.rectTransform.position);
+        }
+        else
+        {
+            toolTip.text = "";
+        }
+
+    }
 	
     void deScale(ref Vector3 vect)
     {

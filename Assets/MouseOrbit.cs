@@ -107,7 +107,7 @@ public class MouseOrbit : MonoBehaviour {
         if (yaw.isActivated())
         {
             float rotationX = Input.GetAxis(mouseHorizontalAxisName) * yaw.sensitivity;
-            transform.Translate(rotationX, 0, 0);
+            transform.Translate(rotationX,0, 0);
             transform.LookAt(target);
         }
         if (pitch.isActivated())

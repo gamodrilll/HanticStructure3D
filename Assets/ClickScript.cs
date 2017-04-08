@@ -6,6 +6,7 @@ public class ClickScript : MonoBehaviour {
 
     private Text text;
     private Text toolTip;
+    private GameObject toolTipP;
 
     public string El;
     void YZSwap(ref Vector3 vect)
@@ -27,7 +28,8 @@ public class ClickScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         text = GameObject.Find("Canvas/ElInfo").GetComponent<Text>();
-        toolTip = GameObject.Find("Canvas/ToolTip").GetComponent<Text>();
+        toolTip = GameObject.Find("Canvas/ToolTipP/ToolTip").GetComponent<Text>();
+        toolTipP = GameObject.Find("Canvas/ToolTipP");
         text.text = "";
 	}
 
@@ -46,11 +48,12 @@ public class ClickScript : MonoBehaviour {
             s += " x/a: " + (vect.x / Info.a).ToString("F3") + " \n y/b: "
             + (vect.y / Info.b).ToString("F3") + " z/c: " + (vect.z / Info.c).ToString("F3");
             toolTip.text = s;
-
-            toolTip.rectTransform.Translate(Input.mousePosition - toolTip.rectTransform.position);
+            toolTipP.SetActive(true);
+            toolTipP.transform.Translate(Input.mousePosition - toolTipP.transform.position+new Vector3(-80,25,0));
         }
         else
         {
+            toolTipP.SetActive(false);
             toolTip.text = "";
         }
 

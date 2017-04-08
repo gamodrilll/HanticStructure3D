@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Net;
+using System.Net.Sockets;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -115,6 +117,7 @@ public class CreateElementsScript : MonoBehaviour {
     public GameObject elements;
     public GameObject borders;
     public Dropdown dr;
+    public Text res;
 
     public delegate Vector3 ReplicationItem(Vector3 vect);
 
@@ -326,16 +329,47 @@ public class CreateElementsScript : MonoBehaviour {
         borders.transform.localPosition = -vec;
     }
 
+    public void ReceiveCallback(IAsyncResult AsyncCall)
+    {
+        System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+        
+
+        Socket listener = (Socket)AsyncCall.AsyncState;
+        Socket client = listener.EndAccept(AsyncCall);
+        byte buf[256];
+        client.re
+
+
+
+
+        client.Close();
+
+        // После того как завершили соединение, говорим ОС что мы готовы принять новое
+        listener.BeginAccept(new AsyncCallback(ReceiveCallback), listener);
+    }
+
     // Use this for initialization
     void Start ()
     {
+
+        IPAddress localAddress = IPAddress.Parse("127.0.0.1");
+
+        Socket listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+        IPEndPoint ipEndpoint = new IPEndPoint(localAddress, 2200);
+
+        listenSocket.Bind(ipEndpoint);
+
+        listenSocket.Listen(1);
+        listenSocket.BeginAccept(new AsyncCallback(ReceiveCallback), listenSocket);
+      
+
         Info.scr = this;
         repCreating();
         Info.borders = GameObject.FindGameObjectWithTag("Borders");
         FindCompounds();
         CreateCompound(0);
         Info.logFile.AutoFlush = true;
-        Server.start1();
     }
 
     private void FindCompounds()
@@ -360,10 +394,7 @@ public class CreateElementsScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
+
 	}
 
     internal void CreateCompound(int val)

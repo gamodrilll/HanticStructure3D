@@ -116,8 +116,10 @@ public class CreateElementsScript : MonoBehaviour {
     public GameObject hantic;
     public GameObject elements;
     public GameObject borders;
+    public GameObject axePrefab;
     public Dropdown dr;
     public Text res;
+
 
     public delegate Vector3 ReplicationItem(Vector3 vect);
 
@@ -329,40 +331,13 @@ public class CreateElementsScript : MonoBehaviour {
         borders.transform.localPosition = -vec;
     }
 
-    public void ReceiveCallback(IAsyncResult AsyncCall)
-    {
-        System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
-        
-
-        Socket listener = (Socket)AsyncCall.AsyncState;
-        Socket client = listener.EndAccept(AsyncCall);
-        byte buf[256];
-        client.re
 
 
-
-
-        client.Close();
-
-        // После того как завершили соединение, говорим ОС что мы готовы принять новое
-        listener.BeginAccept(new AsyncCallback(ReceiveCallback), listener);
-    }
+    
 
     // Use this for initialization
     void Start ()
     {
-
-        IPAddress localAddress = IPAddress.Parse("127.0.0.1");
-
-        Socket listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-        IPEndPoint ipEndpoint = new IPEndPoint(localAddress, 2200);
-
-        listenSocket.Bind(ipEndpoint);
-
-        listenSocket.Listen(1);
-        listenSocket.BeginAccept(new AsyncCallback(ReceiveCallback), listenSocket);
-      
 
         Info.scr = this;
         repCreating();
@@ -399,6 +374,7 @@ public class CreateElementsScript : MonoBehaviour {
 
     internal void CreateCompound(int val)
     {
+        createBorders();
         var children = new List<GameObject>();
         foreach (Transform child in elements.transform) children.Add(child.gameObject);
         children.ForEach(child => DestroyImmediate(child));
@@ -441,5 +417,24 @@ public class CreateElementsScript : MonoBehaviour {
         Text OText = GameObject.Find("OText").GetComponent<Text>();
         OText.text = "O";
         setCenter();
+    }
+
+    private void createBorders()
+    {
+        Vector3 axeXloc = new Vector3(Info.a / 2, 0, 0);
+        Info.YZSwap(ref axeXloc);
+        Info.transToUSC(ref axeXloc);
+        GameObject axeX = (GameObject)Instantiate(axePrefab, axeXloc , Quaternion.identity);
+        axeX.transform.localScale = new Vector3(Info.a, 0.1f, 0.1f);
+        Vector3 axeYloc = new Vector3(0, Info.b/2, 0);
+        Info.transToUSC(ref axeYloc);
+        Info.YZSwap(ref axeYloc);
+        GameObject axeY = (GameObject)Instantiate(axePrefab, axeYloc, Quaternion.Euler(0,90-Info.alpha,0));
+        Vector3 scY = new Vector3(0.1f, Info.b, 0.1f);
+        Info.YZSwap(ref scY);
+        Info.transToOrt(ref scY);
+        axeY.transform.localScale = scY;
+
+
     }
 }

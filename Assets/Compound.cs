@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+
 public enum elementType { Lantanoid, Scandium, Oxygen, Bor1, Bor2 };
 
 [System.Serializable]

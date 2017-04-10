@@ -343,7 +343,7 @@ public class CreateElementsScript : MonoBehaviour {
         repCreating();
         Info.borders = GameObject.FindGameObjectWithTag("Borders");
         FindCompounds();
-        CreateCompound(0);
+        //CreateCompound(compounds[0]);
         Info.logFile.AutoFlush = true;
     }
 
@@ -369,16 +369,19 @@ public class CreateElementsScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
+        if (Server.compToVis!=null)
+        {
+            CreateCompound(Server.compToVis);
+            Server.compToVis = null;
+        }
 	}
 
-    internal void CreateCompound(int val)
+    internal void CreateCompound(Compound cur)
     {
-        createBorders();
+       
         var children = new List<GameObject>();
         foreach (Transform child in elements.transform) children.Add(child.gameObject);
         children.ForEach(child => DestroyImmediate(child));
-        Compound cur = compounds[val];
         Info.a = cur.a;
         Info.b = cur.b;
         Info.c = cur.c;
@@ -387,6 +390,8 @@ public class CreateElementsScript : MonoBehaviour {
         Info.bors1.Clear();
         Info.bors2.Clear();
         Info.oxygens.Clear();
+
+        createBorders();
 
         Element la = cur.elList.Find((Element i) => i.type == elementType.Lantanoid);
         Element sc = cur.elList.Find((Element i) => i.type == elementType.Scandium);
@@ -421,20 +426,41 @@ public class CreateElementsScript : MonoBehaviour {
 
     private void createBorders()
     {
-        Vector3 axeXloc = new Vector3(Info.a / 2, 0, 0);
-        Info.YZSwap(ref axeXloc);
-        Info.transToUSC(ref axeXloc);
-        GameObject axeX = (GameObject)Instantiate(axePrefab, axeXloc , Quaternion.identity);
-        axeX.transform.localScale = new Vector3(Info.a, 0.1f, 0.1f);
-        Vector3 axeYloc = new Vector3(0, Info.b/2, 0);
-        Info.transToUSC(ref axeYloc);
-        Info.YZSwap(ref axeYloc);
-        GameObject axeY = (GameObject)Instantiate(axePrefab, axeYloc, Quaternion.Euler(0,90-Info.alpha,0));
-        Vector3 scY = new Vector3(0.1f, Info.b, 0.1f);
-        Info.YZSwap(ref scY);
-        Info.transToOrt(ref scY);
-        axeY.transform.localScale = scY;
+        var children = new List<GameObject>();
+        foreach (Transform child in borders.transform) children.Add(child.gameObject);
+        children.ForEach(child => DestroyImmediate(child));
 
+
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 axeXloc = new Vector3(Info.a / 2, 0, 0) + i%2*(new Vector3(0,Info.b,0)) + i/2*(new Vector3(0, 0, Info.c));
+            Info.transToUSC(ref axeXloc);
+            Info.YZSwap(ref axeXloc);
+            GameObject axeX = (GameObject)Instantiate(axePrefab, axeXloc, Quaternion.identity,borders.transform);
+            axeX.transform.localScale = new Vector3(Info.a, 0.1f, 0.1f);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 axeYloc = new Vector3(0, Info.b / 2, 0) + i % 2 * (new Vector3(Info.a, 0, 0)) + i / 2 * (new Vector3(0, 0, Info.c));
+            Info.transToUSC(ref axeYloc);
+            Info.YZSwap(ref axeYloc);
+            GameObject axeY = (GameObject)Instantiate(axePrefab, axeYloc, Quaternion.Euler(0, 90 - Info.alpha, 0), borders.transform);
+            Vector3 scY = new Vector3(0.1f, Info.b, 0.1f);
+            Info.YZSwap(ref scY);
+            Info.transToOrt(ref scY);
+            axeY.transform.localScale = scY;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 axeZloc = new Vector3(0, 0, Info.c / 2) + i % 2 * (new Vector3(Info.a, 0, 0)) + i / 2 * (new Vector3(0, Info.b, 0));
+            Info.transToUSC(ref axeZloc);
+            Info.YZSwap(ref axeZloc);
+            GameObject axeZ = (GameObject)Instantiate(axePrefab, axeZloc, Quaternion.Euler(0, 0, 0), borders.transform);
+            Vector3 scZ = new Vector3(0.1f, 0.1f, Info.c);
+            Info.transToUSC(ref scZ);
+            Info.YZSwap(ref scZ);
+            axeZ.transform.localScale = scZ;
+        }
 
     }
 }

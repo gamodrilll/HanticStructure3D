@@ -11,10 +11,9 @@ public class ToolTipScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        text = GameObject.Find("Canvas/ElInfo").GetComponent<Text>();
         toolTip = GameObject.Find("Canvas/ToolTipP/ToolTip").GetComponent<Text>();
         toolTipP = GameObject.Find("Canvas/ToolTipP");
-        text.text = "";
+        toolTipP.SetActive(false);
     }
 	
 	// Update is called once per frame

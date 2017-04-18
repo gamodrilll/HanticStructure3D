@@ -8,14 +8,6 @@ public class DblClickScript : MonoBehaviour
 
     float doubleClickStart = -100;
 
-    private Text text;
-
-    void Start()
-    {
-        text = GameObject.Find("Canvas/ElInfo").GetComponent<Text>();
-        text.text = "";
-    }
-
     void YZSwap(ref Vector3 vect)
     {
         float k = vect.z;
@@ -191,6 +183,41 @@ public class DblClickScript : MonoBehaviour
             Info.DrawLine(this.gameObject, coords);
         }
         Info.scr.setCenter(transform.localPosition);
+        SendBetaClickData();
+    }
+
+    private void SendBetaClickData()
+    {
+        if (this.tag == "La")
+        {
+            GameObject[] oxygens= GameObject.FindGameObjectsWithTag("Oxygen");
+            GameObject a = oxygens[0];
+            GameObject b = null;
+            for (int i = 1; i < 6; i++)
+            {
+                if (oxygens[i].transform.position.y == a.transform.position.y)
+                    continue;
+                if (b == null)
+                {
+                    b = oxygens[i];
+                    continue;
+                }
+                if ((a.transform.position-b.transform.position).magnitude > (a.transform.position - oxygens[i].transform.position).magnitude)
+                {
+                    b = oxygens[i];
+                }
+            }
+            CoordScript scr = GetComponent<CoordScript>();
+            float z = scr.z;
+            ClickData beta = new ClickData(Info.a, Info.b, Info.c, scr.x, scr.y, z);
+            beta.name = this.name;
+            beta.beta = true;
+            scr = a.GetComponent<CoordScript>();
+            beta.ang1 = new ClickData(Info.a, Info.b, Info.c, scr.x, scr.y, z);
+            scr = b.GetComponent<CoordScript>();
+            beta.ang3 = new ClickData(Info.a, Info.b, Info.c, scr.x, scr.y, z);
+            Info.sendClickDatatoWin(beta);
+        }
     }
 
     private Vector3 getVec(GameObject gameObject)

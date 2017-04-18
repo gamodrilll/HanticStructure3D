@@ -92,6 +92,22 @@ public static class Info
     {
         vect.Set(vect.x / Info.a, vect.y / Info.b, vect.z / Info.c);
     }
+
+    public static void sendClickDatatoWin(ClickData c)
+    {
+        Int32 port = 2201;
+        TcpClient client = new TcpClient("127.0.0.1", port);
+
+        NetworkStream stream = client.GetStream();
+        using (FileStream fstream = new FileStream("data.xml", FileMode.Create))
+        {
+            (new XmlSerializer(typeof(ClickData))).Serialize(fstream, c);
+            fstream.Close();
+        }
+        stream.WriteByte(0);
+        stream.Close();
+        client.Close();
+    }
 }
 
 public class CreateElementsScript : MonoBehaviour {
@@ -166,13 +182,14 @@ public class CreateElementsScript : MonoBehaviour {
         list = addAxesElement(list, listInd);
         for(int i=1; i <=list.Count; i++)
         {
-            Vector3 el = list[i-1];
+            Vector3 el = list[i - 1];
             Info.normalize(ref el);
+            if (HaveElement(el))
+                continue;
             Info.Scale(ref el);
             Info.transToUSC(ref el);
             Info.YZSwap(ref el);
-            if (HaveElement(el))
-                continue;
+            
             if (addHiden == false)
             {
                 GameObject NewObj = (GameObject)Instantiate(obj, el, Quaternion.identity);
@@ -205,6 +222,10 @@ public class CreateElementsScript : MonoBehaviour {
                                 NewObj.SetActive(false);
                             NewObj.name = Name + " " + listInd[i - 1].ToString();
                             NewObj.transform.parent = this.transform;
+                            CoordScript scr = NewObj.GetComponentInChildren<CoordScript>();
+                            Vector3 el1 = list[i - 1];
+                            Info.normalize(ref el1);
+                            scr.x = el1.x + x; scr.y = el1.y+y; scr.z = el1.z+ z;
                             thisAtoms.Add(NewObj);
                  
                         }
@@ -305,9 +326,10 @@ public class CreateElementsScript : MonoBehaviour {
         for (int j = 0; j < count; j++)
         {
             Transform tr = this.transform.GetChild(j);
-            if (Math.Abs(tr.localPosition.x - el.x) < 0.05
-                && Math.Abs(tr.localPosition.y - el.y) < 0.05 
-                && Math.Abs(tr.localPosition.z - el.z) < 0.05 )
+            CoordScript scr = tr.GetComponentInChildren<CoordScript>();
+            if (Math.Abs(scr.x - el.x) < 0.05
+                && Math.Abs(scr.y - el.y) < 0.05 
+                && Math.Abs(scr.z - el.z) < 0.05 )
                 return true;
         }
         return false;
@@ -342,36 +364,17 @@ public class CreateElementsScript : MonoBehaviour {
         Info.scr = this;
         repCreating();
         Info.borders = GameObject.FindGameObjectWithTag("Borders");
-        FindCompounds();
-        //CreateCompound(compounds[0]);
         Info.logFile.AutoFlush = true;
     }
 
-    private void FindCompounds()
-    {
-        XmlSerializer ser = new XmlSerializer(typeof(Compound));
-        string[] files = Directory.GetFiles(Directory.GetCurrentDirectory()+@"\Elements\", "*.el");
-        Debug.LogWarning(files.Length);
-        foreach (var fileName in files)
-        {
-            using (Stream s = File.OpenRead(fileName))
-            {
-                Compound x = (Compound)ser.Deserialize(s);
-                compounds.Add(x);
-            }
-        }
-        dr = (Dropdown)FindObjectOfType(typeof(Dropdown));
-        List<string> options = new List<string>();
-        foreach (var i in compounds)
-            options.Add(i.name);
-        dr.AddOptions(options);
-    }
 
     // Update is called once per frame
     void Update () {
         if (Server.compToVis!=null)
         {
+            Info.borders.SetActive(true);
             CreateCompound(Server.compToVis);
+            
             Server.compToVis = null;
         }
 	}

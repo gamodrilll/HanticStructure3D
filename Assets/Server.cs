@@ -39,7 +39,6 @@ public class Server : MonoBehaviour {
         using (NetworkStream s = new NetworkStream(client))
         {
             int l = s.ReadByte();
-            Debug.Log(l);
             if (l != 0)
             {
                 byte[] buf = new byte[l];
@@ -56,7 +55,7 @@ public class Server : MonoBehaviour {
                     Debug.Log("f");
                     st.Close();
                 }
-                File.Delete(@"C:\DIP\Crystal3D\WindowsFormsApplication1\bin\Debug\compound.xml");
+                File.Delete(@"compound.xml");
             }
             s.Close();
         }
